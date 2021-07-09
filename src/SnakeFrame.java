@@ -3,7 +3,7 @@ import java.awt.event.*;
 
 class SnakeFrame extends JFrame{
 	public SnakeFrame(){
-        this.add(new GamePanel());
+        this.add(new LobbyPanel());
         this.setTitle("Java Snakey"); 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();

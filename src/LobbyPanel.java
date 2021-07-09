@@ -83,21 +83,38 @@ class LobbyPanel extends JPanel{
                     
                     decrementMenu();
                     //System.out.println(selectedMenuItem);
+                    repaint();
                     break;
                 case KeyEvent.VK_DOWN:
-                    
                     incrementMenu();
                     //System.out.println(selectedMenuItem);
+                    repaint();
                     break;
                 case KeyEvent.VK_ENTER:
-                    //switchPanels(selectedMenuItem);
-                    break;
-                case KeyEvent.VK_ESCAPE:
-                    System.exit(0);
-                    break;
+                    switchPanels();
             }
-            repaint();
+            
         }
+    }
+
+    private void switchPanels(){
+        switch(selectedMenuItem){
+            case 0:
+                print("Entered Case 0");
+                this.add(new GamePanel());
+                
+                break;
+            case 1:
+
+                break;
+            case 2:
+                System.exit(0);
+                break;
+        }
+    }
+
+    private void print(String m){
+        System.out.println(m);
     }
 
     private void incrementMenu(){
