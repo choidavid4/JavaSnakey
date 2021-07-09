@@ -1,5 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.*;
 
 class LobbyPanel extends JPanel{
     public static final String TITLE_MESSAGE = "Java Snakey";
@@ -13,7 +14,10 @@ class LobbyPanel extends JPanel{
     private int selectedMenuItem = 0;
 
 
+
     public LobbyPanel(){
+        this.addKeyListener(new MyKeyAdapter());
+
         this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
         //Lo hacemos focusable para que tome teclas
@@ -48,7 +52,17 @@ class LobbyPanel extends JPanel{
             int x = (SCREEN_WIDTH - metrics.stringWidth(MENU_ITEMS[i])) / 2; //Horizontal center
             int y = metrics.getHeight() + 300 + (i * (metrics.getHeight() + 20));
             g.drawString(MENU_ITEMS[i], x, y);
+            if (selectedMenuItem == i){
+                drawTriangle(x - 30, y - 20, g);
+            }
         }
+    }
+
+    private void drawTriangle(int x, int y, Graphics g){
+        g.setColor(Color.white);
+        int[] xPoints = {x, x + 20, x};
+        int[] yPoints = {y, y+10, y+20};
+        g.fillPolygon(xPoints, yPoints, 3);
     }
 
     private void drawCreator(Graphics g){
@@ -61,4 +75,49 @@ class LobbyPanel extends JPanel{
 
         g.drawString(CREATOR_MESSAGE, x, y);
     }
+
+    private class MyKeyAdapter extends KeyAdapter{
+        public void keyPressed(KeyEvent e){
+            switch(e.getKeyCode()){
+                case KeyEvent.VK_UP:
+                    
+                    decrementMenu();
+                    //System.out.println(selectedMenuItem);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    
+                    incrementMenu();
+                    //System.out.println(selectedMenuItem);
+                    break;
+                case KeyEvent.VK_ENTER:
+                    switchPanels(selectedMenuItem);
+                    break;
+            }
+            repaint();
+        }
+    }
+
+    private void incrementMenu(){
+        //Siempre escribir las clases y los metodos pensando en expansion. Mientras menos toquemos el source code mejor
+        int lastItemIndex = MENU_ITEMS.length - 1;
+        if(selectedMenuItem < lastItemIndex){ //3
+            selectedMenuItem++;
+        }else{
+            selectedMenuItem = 0;
+        }
+    }
+
+    private void decrementMenu(){
+        int lastItemIndex = MENU_ITEMS.length - 1;
+        if(selectedMenuItem > 0){
+            selectedMenuItem--;
+        }else{
+            selectedMenuItem = lastItemIndex;
+        }
+    }
+
+    public int getSelectedMenuItem(){
+        return selectedMenuItem;
+    }
+
 }
