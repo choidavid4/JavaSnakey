@@ -92,6 +92,9 @@ class LobbyPanel extends JPanel{
                 case KeyEvent.VK_ENTER:
                     //switchPanels(selectedMenuItem);
                     break;
+                case KeyEvent.VK_ESCAPE:
+                    System.exit(0);
+                    break;
             }
             repaint();
         }
