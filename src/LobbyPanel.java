@@ -90,7 +90,7 @@ class LobbyPanel extends JPanel{
                     //System.out.println(selectedMenuItem);
                     break;
                 case KeyEvent.VK_ENTER:
-                    switchPanels(selectedMenuItem);
+                    //switchPanels(selectedMenuItem);
                     break;
             }
             repaint();

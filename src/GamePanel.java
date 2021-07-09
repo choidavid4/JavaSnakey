@@ -216,6 +216,9 @@ class GamePanel extends JPanel implements ActionListener{
                         startGame();
                     }
                     break;
+                case KeyEvent.VK_ESCAPE:
+                    System.exit(0);
+                    break;
             }
             //System.out.println(direction);
         }
