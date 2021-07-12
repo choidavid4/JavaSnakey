@@ -12,12 +12,12 @@ class LobbyPanel extends JPanel{
     public static final int SCREEN_HEIGHT = GamePanel.SCREEN_HEIGHT;
     public static final String[] MENU_ITEMS = {"Play", "Leaderboards", "Exit"};
     private int selectedMenuItem = 0;
-	JFrame parentFrame;
+	SnakeFrame parentFrame;
 
 
 
     public LobbyPanel(JFrame frame){
-		parentFrame = frame;
+		parentFrame = (SnakeFrame) frame;
 		
 		
         this.addKeyListener(new MyKeyAdapter());
@@ -96,6 +96,10 @@ class LobbyPanel extends JPanel{
                 case KeyEvent.VK_ENTER:
                     switchPanels();
 					break;
+				case KeyEvent.VK_ESCAPE:
+                    System.exit(0);
+                    break;
+				
             }
             
         }
@@ -104,8 +108,8 @@ class LobbyPanel extends JPanel{
     private void switchPanels(){
         switch(selectedMenuItem){
             case 0:
-				SnakeFrame2 parentF = (SnakeFrame2) parentFrame;
-                parentF.switchToGamePanel();
+				
+                parentFrame.switchToGamePanel();
                 break;
             case 1:
 

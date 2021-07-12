@@ -21,11 +21,11 @@ class GamePanel extends JPanel implements ActionListener{
     private int[] snakeY = new int[GAME_UNITS];
     private int snakeSize;
     private int score;
-	JFrame parentFrame;
+	SnakeFrame parentFrame;
    
 
     GamePanel(JFrame frame){
-		parentFrame = frame;
+		parentFrame = (SnakeFrame) frame;
 		
         //Si el panel no es focuseable, no va a escuchar las teclas
         this.setFocusable(true);
@@ -218,8 +218,8 @@ class GamePanel extends JPanel implements ActionListener{
                     }
                     break;
                 case KeyEvent.VK_ESCAPE:
-                    System.exit(0);
-                    break;
+					parentFrame.switchToLobbyPanel();
+					break;
             }
             //System.out.println(direction);
         }
