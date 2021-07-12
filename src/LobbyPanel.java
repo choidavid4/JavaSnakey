@@ -12,16 +12,21 @@ class LobbyPanel extends JPanel{
     public static final int SCREEN_HEIGHT = GamePanel.SCREEN_HEIGHT;
     public static final String[] MENU_ITEMS = {"Play", "Leaderboards", "Exit"};
     private int selectedMenuItem = 0;
+	JFrame parentFrame;
 
 
 
-    public LobbyPanel(){
+    public LobbyPanel(JFrame frame){
+		parentFrame = frame;
+		
+		
         this.addKeyListener(new MyKeyAdapter());
-
+	
         this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
         //Lo hacemos focusable para que tome teclas
         this.setFocusable(true);
+		this.requestFocus();
     }
 
     public void paintComponent(Graphics g){
@@ -80,9 +85,7 @@ class LobbyPanel extends JPanel{
         public void keyPressed(KeyEvent e){
             switch(e.getKeyCode()){
                 case KeyEvent.VK_UP:
-                    
                     decrementMenu();
-                    //System.out.println(selectedMenuItem);
                     repaint();
                     break;
                 case KeyEvent.VK_DOWN:
@@ -92,6 +95,7 @@ class LobbyPanel extends JPanel{
                     break;
                 case KeyEvent.VK_ENTER:
                     switchPanels();
+					break;
             }
             
         }
@@ -100,9 +104,8 @@ class LobbyPanel extends JPanel{
     private void switchPanels(){
         switch(selectedMenuItem){
             case 0:
-                print("Entered Case 0");
-                this.add(new GamePanel());
-                
+				SnakeFrame2 parentF = (SnakeFrame2) parentFrame;
+                parentF.switchToGamePanel();
                 break;
             case 1:
 

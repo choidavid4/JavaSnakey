@@ -21,17 +21,19 @@ class GamePanel extends JPanel implements ActionListener{
     private int[] snakeY = new int[GAME_UNITS];
     private int snakeSize;
     private int score;
+	JFrame parentFrame;
    
 
-    GamePanel(){
+    GamePanel(JFrame frame){
+		parentFrame = frame;
+		
         //Si el panel no es focuseable, no va a escuchar las teclas
         this.setFocusable(true);
-        this.setVisible(true);
+		this.requestFocus();
         this.addKeyListener(new MyKeyAdapter());
         this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
         this.setBackground(Color.black);
         //Timer is a class from Swing that fires up an ActionEvent every given interval of miliseconds. In this case, timer activates this class every quarter of a second.
-        startGame();
         System.out.println("Initialized Game Panel");
     }
     public void startGame(){
