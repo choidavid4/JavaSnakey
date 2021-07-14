@@ -112,7 +112,7 @@ class LobbyPanel extends JPanel{
                 parentFrame.switchToGamePanel();
                 break;
             case 1:
-
+				
                 break;
             case 2:
                 System.exit(0);
