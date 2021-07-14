@@ -22,6 +22,7 @@ class GamePanel extends JPanel implements ActionListener{
     private int snakeSize;
     private int score;
 	SnakeFrame parentFrame;
+    boolean keyInput = false;
    
 
     GamePanel(JFrame frame){
@@ -176,6 +177,8 @@ class GamePanel extends JPanel implements ActionListener{
                 snakeY[0] += UNIT_SIZE;
                 break;
         }
+
+        keyInput = false;
     }
     public void gameOver(){
         timer.stop();
@@ -193,23 +196,27 @@ class GamePanel extends JPanel implements ActionListener{
             
             switch(k.getKeyCode()){
                 case (KeyEvent.VK_DOWN):
-                    if(direction != 'U'){
+                    if(direction != 'U' && keyInput == false){
                         direction = 'D';
+                        keyInput = true;
                     }
                     break;
                 case (KeyEvent.VK_UP):
-                    if(direction != 'D' ){
+                    if(direction != 'D' && !keyInput){
                         direction = 'U';
+                        keyInput = true;
                     }
                     break;
                 case (KeyEvent.VK_LEFT):
-                    if(direction != 'R'){
+                    if(direction != 'R' && keyInput == false){
                         direction = 'L';
+                        keyInput = true;
                     }
                     break;
                 case (KeyEvent.VK_RIGHT):
-                    if(direction != 'L'){
+                    if(direction != 'L' && keyInput == false){
                         direction = 'R';
+                        keyInput = true;
                     }
                     break;
                 case (KeyEvent.VK_R):
@@ -225,6 +232,13 @@ class GamePanel extends JPanel implements ActionListener{
         }
     }
     
-
+    public void sleep(int millis){
+        try{
+            Thread.sleep(millis);
+            System.out.println("Slept");
+        }catch(Exception ex){
+            System.out.println("Fatal Error in sleep() method");
+        }
+    }
     
 }
