@@ -19,6 +19,7 @@ class SnakeFrame extends JFrame{
         this.setVisible(true);
 		
 		this.add(gamePanel);
+		
     }
 	
 	public void switchToGamePanel(){
@@ -56,6 +57,7 @@ class SnakeFrame extends JFrame{
 			leaderboardPanel.requestFocus();
 		}else{
 			lobbyPanel.setVisible(false);
+			gamePanel.setVisible(false);
 			this.add(leaderboardPanel);
 			leaderboardPanel.requestFocus();
 			addedLeaderboard = true;
