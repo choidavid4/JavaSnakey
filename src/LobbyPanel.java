@@ -108,11 +108,10 @@ class LobbyPanel extends JPanel{
     private void switchPanels(){
         switch(selectedMenuItem){
             case 0:
-				
                 parentFrame.switchToGamePanel();
                 break;
             case 1:
-				
+				parentFrame.switchToLeaderboardPanel();
                 break;
             case 2:
                 System.exit(0);

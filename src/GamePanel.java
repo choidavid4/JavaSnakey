@@ -35,6 +35,7 @@ class GamePanel extends JPanel implements ActionListener{
         this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
         this.setBackground(Color.black);
         //Timer is a class from Swing that fires up an ActionEvent every given interval of miliseconds. In this case, timer activates this class every quarter of a second.
+		
         
     }
     public void startGame(){
@@ -47,7 +48,7 @@ class GamePanel extends JPanel implements ActionListener{
         direction = 'R';
         timer.start();
         newApple();
-        
+        System.out.println("Initialized game panel startGame()");
     }
 
     public void actionPerformed(ActionEvent ev){
