@@ -24,7 +24,7 @@ public class LeaderboardPanel extends JPanel{
 		this.setLayout(new BorderLayout());
 		this.addKeyListener(new MyKeyAdapter());
 		
-		JLabel title = new JLabel("Leaderboards");
+		JLabel title = new JLabel("Top 10 Snakeys");
 		title.setForeground(Color.white);
 		title.setFont(TITLE_FONT);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
@@ -72,6 +72,7 @@ public class LeaderboardPanel extends JPanel{
 	
 	public void loadScoreList(){
 		try{
+			scoreList.clear();
 			BufferedReader buffer = new BufferedReader(new FileReader(new File("scores.data")));
 			String line;
 			String[] nameScore;
@@ -97,7 +98,7 @@ public class LeaderboardPanel extends JPanel{
 	}
 }
 
-class Score{
+class Score implements Comparable{
 	String name;
 	int score;
 	
@@ -108,6 +109,19 @@ class Score{
 	
 	public String toString(){
 		return "name: " + this.name + " score: " + this.score;
+	}
+	
+	public int getScore(){
+		return score;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public int compareTo(Object o){
+		Score b = (Score) o;
+		return this.score - b.score;
 	}
 }
 

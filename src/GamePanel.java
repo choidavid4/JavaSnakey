@@ -1,6 +1,9 @@
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
+import java.io.*;
 
 class GamePanel extends JPanel implements ActionListener{
     public static final int SCREEN_WIDTH = 600;
@@ -20,9 +23,16 @@ class GamePanel extends JPanel implements ActionListener{
     private int[] snakeX = new int[GAME_UNITS];
     private int[] snakeY = new int[GAME_UNITS];
     private int snakeSize;
-    private int score;
+    private int applesEaten;
 	SnakeFrame parentFrame;
     boolean keyInput = false;
+	private int lowestScore;
+	private ArrayList<Score> scoreList = new ArrayList<Score>();
+	private boolean showJTextField = false;
+	private String playerName = "";
+	String[] gameOverMessages = {"Maybe next time!", "Sorry Snakey!", "Don't lose hope yet!", "GG WP", "Time for shedding", "Nice Keyboard", "Ow :(", "Ooh That hurts!"};
+	String randomGameOverMessage = "";
+	private Score actualScore;
    
 
     GamePanel(JFrame frame){
@@ -35,12 +45,11 @@ class GamePanel extends JPanel implements ActionListener{
         this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
         this.setBackground(Color.black);
         //Timer is a class from Swing that fires up an ActionEvent every given interval of miliseconds. In this case, timer activates this class every quarter of a second.
-		
-        
     }
+	
     public void startGame(){
         snakeSize = INITIAL_SNAKE_SIZE;
-        score = 0;
+        applesEaten = 0;
         for(int i = 0; i < snakeSize; i++){
             snakeX[i] = 0;
             snakeY[i] = 0;
@@ -49,7 +58,39 @@ class GamePanel extends JPanel implements ActionListener{
         timer.start();
         newApple();
         System.out.println("Initialized game panel startGame()");
+		loadScoreList();
+		loadLowestScore();
+		randomGameOverMessage = gameOverMessages[random(gameOverMessages.length)];
     }
+	
+	//same method as the one in leaderboardPanel
+	public void loadScoreList(){
+		try{
+			scoreList.clear();
+			BufferedReader buffer = new BufferedReader(new FileReader(new File("scores.data")));
+			String line;
+			String[] nameScore;
+			Score aux;
+			while((line = buffer.readLine()) != null){
+				nameScore = line.split(",");
+				aux = new Score(nameScore[0], Integer.parseInt(nameScore[1]));
+				scoreList.add(aux);
+			}
+			System.out.println("ArrayList loaded successfully");
+			System.out.println(scoreList);
+		}catch(Exception ex){
+			System.out.println("Error trying to read file");
+		}
+	}
+	
+	public void loadLowestScore(){
+		//vamos a sortear una vez por las dudas. sort() SORTEA DE MENOR A MAYOR
+		scoreList.sort(Comparator.reverseOrder());
+		lowestScore = scoreList.get(9).getScore();
+		System.out.println("lowestScore: " + lowestScore);
+	}
+	
+
 
     public void actionPerformed(ActionEvent ev){
         move();
@@ -61,7 +102,7 @@ class GamePanel extends JPanel implements ActionListener{
 
 
     public void paintComponent(Graphics g){
-        super.paintComponent(g);
+        super.paintComponent(g); 
         /*
         //Drawing a grid
         for(int i = 0; i < HORIZONTAL_UNITS; i++){
@@ -86,33 +127,53 @@ class GamePanel extends JPanel implements ActionListener{
         g.setColor(Color.white);
         g.setFont(new Font("MS Gothic", Font.PLAIN, 25));
         FontMetrics fontSize = g.getFontMetrics();
-        int fontX = SCREEN_WIDTH - fontSize.stringWidth("Score: " + score) - 10;
+        int fontX = SCREEN_WIDTH - fontSize.stringWidth("Score: " + applesEaten) - 10;
         int fontY = fontSize.getHeight();
-        g.drawString("Score: " + score, fontX, fontY);
+        g.drawString("Score: " + applesEaten, fontX, fontY);
         
         if(!timer.isRunning()){
             //print game over screen
             g.setColor(Color.white);
             g.setFont(new Font("MS Gothic", Font.PLAIN, 58));
-            String[] gameOverMessages = {"Maybe next time!", "Sorry Snakey!", "Don't lose hope yet!", "GG WP", "Time for shedding", "Nice Keyboard", "Ow :(", "Ooh That hurts!"};
-            String message = gameOverMessages[random(gameOverMessages.length)];
+            
+            String message = randomGameOverMessage;
             fontSize = g.getFontMetrics();
             fontX = (SCREEN_WIDTH - fontSize.stringWidth(message)) / 2 ;
             fontY = (SCREEN_HEIGHT - fontSize.getHeight()) /2;
             g.drawString(message, fontX, fontY);
 
             g.setFont(new Font("MS Gothic", Font.PLAIN, 24));
-            message = "Press R to restart";
+            message = "Press F2 to restart";
             fontSize = g.getFontMetrics();
             fontX = (SCREEN_WIDTH - fontSize.stringWidth(message)) / 2 ;
             fontY = fontY + fontSize.getHeight() + 20;
             g.drawString(message, fontX, fontY);
+			
+			if(showJTextField){
+				drawJTextField(g);
+				drawPlayerName(g);
+				
+			}
+			
         }
     }
-
-    public void drawString(Color color, Font font, String message, int fontX, int fontY, Graphics g){
-        
-    }
+	
+	public void drawJTextField(Graphics g){
+		g.setFont(new Font("MS Gothic", Font.PLAIN, 24));
+		String message = "Insert your name";
+		FontMetrics fontSize = g.getFontMetrics();
+		//Horizontal center
+		int fontX = (SCREEN_WIDTH - fontSize.stringWidth(message)) / 2 ;
+		g.drawString(message, fontX, 350);
+	}
+	
+	public void drawPlayerName(Graphics g){
+		g.setFont(new Font("MS Gothic", Font.PLAIN, 24));
+		FontMetrics fontSize = g.getFontMetrics();
+		//Horizontal center
+		int fontX = (SCREEN_WIDTH - fontSize.stringWidth(playerName)) / 2 ;
+		g.drawString(playerName, fontX, 400);
+	}
 
     
    
@@ -149,14 +210,16 @@ class GamePanel extends JPanel implements ActionListener{
             }
         }
     }
-    public void eatApple(){
+    
+	public void eatApple(){
         if(snakeX[0] == appleX && snakeY[0] == appleY){
             snakeSize++;
-            score++;
+            applesEaten++;
             newApple();
         }
     }
-    public void move(){
+    
+	public void move(){
         //Este metodo se ejecuta cada vez que timer nos lo permite
         //Hay que recorrer la serpiente de atras para adelante
         for(int i = snakeSize; i > 0; i--){
@@ -181,8 +244,12 @@ class GamePanel extends JPanel implements ActionListener{
 
         keyInput = false;
     }
-    public void gameOver(){
+    
+	public void gameOver(){
         timer.stop();
+		if(applesEaten > lowestScore){
+			showJTextField = true;
+		}
         
     }
 
@@ -220,7 +287,7 @@ class GamePanel extends JPanel implements ActionListener{
                         keyInput = true;
                     }
                     break;
-                case (KeyEvent.VK_R):
+                case (KeyEvent.VK_F2):
                     if(!timer.isRunning()){
                         startGame();
                     }
@@ -229,9 +296,46 @@ class GamePanel extends JPanel implements ActionListener{
 					parentFrame.switchToLobbyPanel();
 					break;
             }
+			
+			if(showJTextField){
+				if(k.getKeyCode() == KeyEvent.VK_ENTER){
+					parentFrame.switchToLobbyPanel();
+					actualScore = new Score(playerName, applesEaten);
+					scoreList.add(actualScore);
+					sortAndSave();
+					showJTextField = false;
+				}else if(k.getKeyCode() == KeyEvent.VK_BACK_SPACE && playerName.length() > 0){
+					StringBuilder sb = new StringBuilder(playerName);
+					sb.deleteCharAt(sb.length() - 1);
+					playerName = sb.toString();
+				}
+				else{
+					if(!k.isActionKey() && k.getKeyCode() != KeyEvent.VK_SHIFT && k.getKeyCode() != KeyEvent.VK_BACK_SPACE){
+						playerName = playerName + k.getKeyChar();
+					}
+				}
+				
+				repaint();
+			}
             //System.out.println(direction);
         }
     }
+	
+	public void sortAndSave(){
+		try{
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("scores.data")));
+			scoreList.sort(Comparator.reverseOrder());
+			for(int i = 0; i < 10; i++){
+				Score element = scoreList.get(i);
+				bw.write(element.name + "," + String.valueOf(element.score) + "\n");
+				System.out.println("Line written");
+			}
+			bw.flush();
+		}catch(IOException ex){
+			System.out.println("Error writing file");
+		}
+		
+	}
     
     public void sleep(int millis){
         try{
