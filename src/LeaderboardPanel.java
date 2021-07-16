@@ -12,6 +12,7 @@ public class LeaderboardPanel extends JPanel{
 	public static final Font HEADER_FONT = new Font("Arial", Font.BOLD , 32);
 	ArrayList<Score> scoreList = new ArrayList<Score>();
 	SnakeFrame parentFrame;
+	JPanel scores;
 	
 	
 	
@@ -33,31 +34,13 @@ public class LeaderboardPanel extends JPanel{
 		this.add(title, BorderLayout.NORTH);
 		
 		GridLayout grid = new GridLayout(11, 2);
-		JPanel scores = new JPanel(grid);
+		scores = new JPanel(grid);
 		scores.setBackground(new Color(0,0,0,0));
 		scores.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		
-		JLabel nameLabel = getLabelItem("Name");
-		JLabel scoreLabel = getLabelItem("Score");
-		nameLabel.setFont(HEADER_FONT);
-		scoreLabel.setFont(HEADER_FONT);
-		
-		scores.add(nameLabel);
-		scores.add(scoreLabel);
-		
 		loadScoreList();
 		
-		for(int i = 0; i < 10; i++){
-			Score score1 = scoreList.get(i);
-			JLabel nameLabel1 = getLabelItem(score1.name);
-			JLabel scoreLabel1 = getLabelItem(String.valueOf(score1.score));
-			
-			scores.add(nameLabel1);
-			scores.add(scoreLabel1);
-		}
 		
-		
-		this.add(scores, BorderLayout.CENTER);
 		
 	}
 	
@@ -85,7 +68,36 @@ public class LeaderboardPanel extends JPanel{
 			System.out.println("ArrayList loaded successfully");
 		}catch(Exception ex){
 			System.out.println("Error trying to read file");
+		}finally{
+			scores.removeAll();
+			scores.repaint();
+			JLabel nameLabel = getLabelItem("Name");
+			JLabel scoreLabel = getLabelItem("Score");
+			nameLabel.setFont(HEADER_FONT);
+			scoreLabel.setFont(HEADER_FONT);
+			
+			scores.add(nameLabel);
+			scores.add(scoreLabel);
+			
+			for(int i = 0; i < 10; i++){
+				
+				
+				
+				
+
+				Score score1 = scoreList.get(i);
+				JLabel nameLabel1 = getLabelItem(score1.name);
+				JLabel scoreLabel1 = getLabelItem(String.valueOf(score1.score));
+				
+				scores.add(nameLabel1);
+				scores.add(scoreLabel1);
+			}
+			this.add(scores, BorderLayout.CENTER);
 		}
+	}
+
+	public void reloadScoreList(){
+
 	}
 	
 	class MyKeyAdapter extends KeyAdapter{

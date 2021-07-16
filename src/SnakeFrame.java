@@ -36,6 +36,13 @@ class SnakeFrame extends JFrame{
 		lobbyPanel.setVisible(true);
 		lobbyPanel.requestFocus();
 	}
+
+	public void gameToLeaderboard(){
+		gamePanel.setVisible(false);
+		leaderboardPanel.loadScoreList();
+		leaderboardPanel.setVisible(true);
+		leaderboardPanel.requestFocus();
+	}
 	
 	public void leaderboardToGame(){
 		leaderboardPanel.setVisible(false);
@@ -53,6 +60,7 @@ class SnakeFrame extends JFrame{
 	public void switchToLeaderboardPanel(){
 		if(addedLeaderboard){
 			lobbyPanel.setVisible(false);
+			leaderboardPanel.loadScoreList();
 			leaderboardPanel.setVisible(true);
 			leaderboardPanel.requestFocus();
 		}else{

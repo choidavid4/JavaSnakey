@@ -299,11 +299,12 @@ class GamePanel extends JPanel implements ActionListener{
 			
 			if(showJTextField){
 				if(k.getKeyCode() == KeyEvent.VK_ENTER){
-					parentFrame.switchToLobbyPanel();
 					actualScore = new Score(playerName, applesEaten);
 					scoreList.add(actualScore);
+                    playerName = "";
 					sortAndSave();
 					showJTextField = false;
+                    parentFrame.switchToLobbyPanel();
 				}else if(k.getKeyCode() == KeyEvent.VK_BACK_SPACE && playerName.length() > 0){
 					StringBuilder sb = new StringBuilder(playerName);
 					sb.deleteCharAt(sb.length() - 1);
