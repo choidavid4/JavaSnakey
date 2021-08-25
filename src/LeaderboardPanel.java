@@ -38,7 +38,7 @@ public class LeaderboardPanel extends JPanel{
 		scores.setBackground(new Color(0,0,0,0));
 		scores.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		
-		loadScoreList();
+		
 		
 		
 		
@@ -67,7 +67,7 @@ public class LeaderboardPanel extends JPanel{
 			}
 			System.out.println("ArrayList loaded successfully");
 		}catch(Exception ex){
-			System.out.println("Error trying to read file");
+			System.out.println("Error trying to read Leaderboard File");
 		}finally{
 			scores.removeAll();
 			scores.repaint();
@@ -80,11 +80,6 @@ public class LeaderboardPanel extends JPanel{
 			scores.add(scoreLabel);
 			
 			for(int i = 0; i < 10; i++){
-				
-				
-				
-				
-
 				Score score1 = scoreList.get(i);
 				JLabel nameLabel1 = getLabelItem(score1.name);
 				JLabel scoreLabel1 = getLabelItem(String.valueOf(score1.score));

@@ -67,6 +67,7 @@ class SnakeFrame extends JFrame{
 			lobbyPanel.setVisible(false);
 			gamePanel.setVisible(false);
 			this.add(leaderboardPanel);
+			leaderboardPanel.loadScoreList();
 			leaderboardPanel.requestFocus();
 			addedLeaderboard = true;
 		}

@@ -329,7 +329,7 @@ class GamePanel extends JPanel implements ActionListener{
 			for(int i = 0; i < 10; i++){
 				Score element = scoreList.get(i);
 				bw.write(element.name + "," + String.valueOf(element.score) + "\n");
-				System.out.println("Line written");
+				
 			}
 			bw.flush();
 		}catch(IOException ex){
